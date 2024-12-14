@@ -1,59 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body>
-    <div class="container">
-        <h1 class="my-4">Admin Dashboard</h1>
+@extends('layouts.admin')
 
-        <!-- Dashboard Quick Links -->
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <a href="{{ route('admin.announcements.index') }}" class="btn btn-primary btn-block">
-                    Manage Announcements
-                </a>
+@section('title', 'Dashboard')
+
+@section('content')
+<div class="container">
+    <h1 class="mb-4">Welcome to the Admin Dashboard</h1>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h4>Total Users</h4>
+                <p class="display-5" id="user-count">Loading...</p>
             </div>
-            <div class="col-md-4 mb-3">
-                <a href="{{ route('admin.bookings') }}" class="btn btn-primary btn-block">
-                    Manage Bookings
-                </a>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h4>Pending Bookings</h4>
+                <p class="display-5" id="pending-bookings">Loading...</p>
             </div>
-            <div class="col-md-4 mb-3">
-                <a href="{{ route('admin.properties') }}" class="btn btn-primary btn-block">
-                    Manage Properties
-                </a>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h4>Transactions</h4>
+                <p class="display-5">$54,210</p>
             </div>
-            <div class="col-md-4 mb-3">
-                <a href="{{ route('admin.analytics') }}" class="btn btn-primary btn-block">
-                    Analytics
-                </a>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h4>Unresolved Tickets</h4>
+                <p class="display-5" id="unresolved-tickets">Loading...</p>
             </div>
-            <div class="col-md-4 mb-3">
-                <a href="{{ route('admin.users') }}" class="btn btn-primary btn-block">
-                    User Management
-                </a>
-            </div>
-            <div class="col-md-4 mb-3">
-                <a href="{{ route('admin.hosts') }}" class="btn btn-primary btn-block">
-                    Manage Hosts
-                </a>
-            </div>
-            <div class="col-md-4 mb-3">
-                <a href="{{ route('admin.tickets') }}" class="btn btn-primary btn-block">
-                    Manage Tickets
-                </a>
-            </div>
-            <div class="col-md-4 mb-3">
-              <a href="{{ route('admin.transactions') }}" class="btn btn-primary btn-block">
-                  Manage Transactions
-              </a>
-          </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+    <!-- Chart Section -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="chart-container">
+                <h4>User Activity</h4>
+                <canvas id="userActivityChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h4>Recent Transactions</h4>
+                <ul class="list-unstyled">
+                    <li>Transaction 1: $200</li>
+                    <li>Transaction 2: $150</li>
+                    <li>Transaction 3: $400</li>
+                    <li>Transaction 4: $300</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    const ctx = document.getElementById('userActivityChart').getContext('2d');
+    const userActivityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            datasets: [{
+                label: 'Active Users',
+                data: [120, 200, 150, 220, 300, 250, 400],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            },
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        axios.get('/admin/user-count')
+            .then(response => {
+                document.getElementById('user-count').textContent = response.data.count;
+            })
+            .catch(error => {
+                console.error('Error fetching user count:', error);
+                document.getElementById('user-count').textContent = 'Error';
+            });
+
+            axios.get('/admin/pending-bookings')
+            .then(response => {
+                document.getElementById('pending-bookings').textContent = response.data.count;
+            })
+            .catch(error => {
+                console.error('Error fetching pending bookings:', error);
+                document.getElementById('pending-bookings').textContent = 'Error';
+            });
+
+            axios.get('/admin/unresolved-tickets')
+            .then(response => {
+                document.getElementById('unresolved-tickets').textContent = response.data.count;
+            })
+            .catch(error => {
+                console.error('Error fetching unresolved tickets:', error);
+                document.getElementById('unresolved-tickets').textContent = 'Error';
+            });
+    });
+</script>
+@endpush

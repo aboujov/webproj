@@ -20,4 +20,10 @@ public function updateStatus(Request $request, $id)
     return redirect()->route('admin.bookings')->with('success', 'Booking status updated successfully!');
 }
 
+public function getPendingBookingsCount()
+{
+    $count = Booking::where('status', '=', 'pending')->count();
+    return response()->json(['count' => $count]);
+}
+
 }

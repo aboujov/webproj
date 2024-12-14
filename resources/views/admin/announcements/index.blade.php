@@ -3,7 +3,7 @@
 @section('content')
     <h1>Announcements</h1>
 
-    <a href="{{ route('admin.announcements.create') }}" class="btn btn-primary mb-3">Create New Announcement</a>
+    <a href="{{ route('admin.announcements.create') }}" class="btn btn-primary mb-3 float-end">New Announcement</a>
 
     <table class="table table-bordered">
         <thead>
@@ -21,11 +21,11 @@
                     <td>{{ Str::limit($announcement->message, 50) }}</td>
                     <td>{{ $announcement->is_active ? 'Active' : 'Inactive' }}</td>
                     <td>
-                        <a href="{{ route('admin.announcements.edit', $announcement->id) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ route('admin.announcements.edit', $announcement->id) }}" class="btn btn-warning text-white"><i class="bi bi-pencil"></i></a>
                         <form action="{{ route('admin.announcements.destroy', $announcement->id) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this announcement?')">Delete</button>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this announcement?')"><i class="bi bi-trash"></i></button>
                         </form>
                     </td>
                 </tr>

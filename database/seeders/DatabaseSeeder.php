@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'password' => Hash::make('admin'),
+                'role' => 'admin'
             ]
         );
     
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
             PropertySeeder::class,
             TicketSeeder::class,
             BookingSeeder::class,
+            TransactionSeeder::class
         ]);
     }
 }

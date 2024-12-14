@@ -20,4 +20,9 @@ public function updateStatus(Request $request, $id)
     return redirect()->route('admin.tickets')->with('success', 'Ticket status updated successfully!');
 }
 
+public function getUnresolvedTicketsCount()
+{
+    $ticket = Ticket::where('status', '!=', 'resolved')->count();
+    return response()->json(['count' => $ticket]);
+}
 }

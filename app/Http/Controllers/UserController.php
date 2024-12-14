@@ -28,5 +28,11 @@ public function ban($id)
     return redirect()->route('admin.users')->with('success', 'User banned successfully!');
 }
 
+public function getUserCount()
+{
+    $userCount = User::where('role', '!=', 'admin')->count();
+    return response()->json(['count' => $userCount]);
+}
+
 }
 

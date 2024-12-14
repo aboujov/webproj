@@ -24,7 +24,7 @@ Route::get('/', function () {
 // Authentication Routes
 Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
-Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(function () {
@@ -35,6 +35,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
 
     // User Management
     Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/user-count', [UserController::class, 'getUserCount']);
     Route::post('/users/approve/{id}', [UserController::class, 'approve'])->name('users.approve');
     Route::post('/users/ban/{id}', [UserController::class, 'ban'])->name('users.ban');
 
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
 
     // Tickets
     Route::get('/tickets', [TicketController::class, 'index'])->name('tickets');
+    Route::get('/unresolved-tickets', [TicketController::class, 'getUnresolvedTicketsCount']);
     Route::post('/tickets/update/{id}', [TicketController::class, 'updateStatus'])->name('tickets.update');
 
     // Hosts
@@ -54,6 +56,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
 
     // Bookings
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings');
+    Route::get('/pending-bookings', [BookingController::class, 'getPendingBookingsCount']);
     Route::post('/bookings/update/{id}', [BookingController::class, 'updateStatus'])->name('bookings.update');
 
     // Analytics

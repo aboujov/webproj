@@ -11,9 +11,9 @@ class AnalyticsController extends Controller
     public function dashboard()
 {
     // User metrics
-    $totalUsers = User::count();
-    $activeUsers = User::where('last_login', '>=', now()->subDays(30))->count(); // Assuming a `last_login` column exists
-    $newSignups = User::where('created_at', '>=', now()->subDays(30))->count();
+    $totalUsers = User::where('role', '!=', 'admin')->count();
+    $activeUsers = User::where('role', '!=', 'admin')->where('last_login', '>=', now()->subDays(30))->count(); // Assuming a `last_login` column exists
+    $newSignups = User::where('role', '!=', 'admin')->where('created_at', '>=', now()->subDays(30))->count();
 
     // Booking metrics
     $totalBookings = Booking::count();

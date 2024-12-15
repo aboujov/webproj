@@ -10,15 +10,19 @@ class PropertySeeder extends Seeder
 {
     public function run()
     {
-        // Fetch a user with the "host" role
-        $host = User::where('role', 'host')->first();
+        // Fetch all users with the "host" role
+        $hosts = User::where('role', 'host')->get();
 
-        if ($host) {
-            Property::factory(10)->create([
+        if ($hosts->isEmpty()) {
+            $this->command->error('No users with the "host" role found. Please seed users first.');
+            return;
+        }
+
+        // Create properties for multiple hosts
+        foreach ($hosts as $host) {
+            Property::factory(rand(1, 5))->create([
                 'host_id' => $host->id,
             ]);
-        } else {
-            $this->command->error('No user with the "host" role found. Please seed users first.');
         }
     }
 }

@@ -13,7 +13,7 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         return [
-            'guest_id' => User::inRandomOrder()->first()->id,
+            'guest_id' => User::where('role', '!=', 'admin')->inRandomOrder()->first()->id,
             'property_id' => Property::inRandomOrder()->first()->id,
             'status' => fake()->randomElement(['pending', 'approved', 'cancelled']),
             'start_date' => fake()->dateTimeBetween('+1 week', '+2 months'),

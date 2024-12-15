@@ -10,15 +10,19 @@ class TicketSeeder extends Seeder
 {
     public function run()
     {
-        // Fetch a user (can be a user with a specific role or any user)
-        $user = User::first();  // You can modify this logic to select a specific user
+        // Fetch all non-admin users
+        $users = User::where('role', '!=', 'admin')->get();
 
-        if ($user) {
-            Ticket::factory(10)->create([
+        if ($users->isEmpty()) {
+            $this->command->error('No eligible users found. Please seed non-admin users first.');
+            return;
+        }
+
+        // Create tickets for multiple users
+        foreach ($users as $user) {
+            Ticket::factory(rand(1, 5))->create([
                 'user_id' => $user->id,
             ]);
-        } else {
-            $this->command->error('No user found. Please seed users first.');
         }
     }
 }

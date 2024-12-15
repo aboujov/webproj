@@ -67,6 +67,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
     Route::post('/transactions/update/{id}', [TransactionController::class, 'updateStatus'])->name('transactions.update');
     Route::get('/transactions/report', [TransactionController::class, 'generateReport'])->name('transactions.report');
+    Route::get('/transactions/last', [TransactionController::class, 'getLastTransactions']);
+    Route::get('/transactions/total-amount', [TransactionController::class, 'getTotalAmount']);
 
     // Announcements (Resource Route)
     Route::resource('announcements', AnnouncementController::class);
@@ -74,9 +76,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     require __DIR__.'/auth.php';
 
 });
-
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -53,9 +53,7 @@
                                                 <option value="refunded" {{ $transaction->status === 'refunded' ? 'selected' : '' }}>Refunded</option>
                                                 <option value="disputed" {{ $transaction->status === 'disputed' ? 'selected' : '' }}>Disputed</option>
                                             </select>
-                                            <button type="submit" class="btn btn-primary btn-sm">
-                                                <i class="bi bi-save"></i> Update
-                                            </button>
+                                            <button type="submit" class="btn btn-primary">Update</button>
                                         </div>
                                     </form>
                                 </td>

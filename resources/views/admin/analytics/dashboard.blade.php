@@ -102,8 +102,8 @@
     </div>
 
     <div class="text-center mt-4">
-        <a href="{{ route('admin.analytics.report') }}" class="btn btn-primary btn-lg">
-            <i class="fas fa-download mr-2"></i>Download Full Report
+        <a href="{{ route('admin.analytics.report') }}" class="btn btn-secondary">
+            <i class="bi bi-download"></i> Download Full Report
         </a>
     </div>
 </div>

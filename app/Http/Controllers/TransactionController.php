@@ -51,4 +51,21 @@ public function generateReport()
     return response()->stream($callback, 200, $headers);
 }
 
+public function getTotalAmount()
+{
+    $totalAmount = Transaction::sum('amount');
+    return response()->json(['total_amount' => $totalAmount], 200);
+}
+
+
+public function getLastTransactions()
+{
+    $transactions = Transaction::with('booking', 'user')
+        ->latest()
+        ->take(4)
+        ->get();
+
+    return response()->json($transactions);
+}
+
 }

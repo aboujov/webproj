@@ -23,7 +23,6 @@
                             <th>User</th>
                             <th>Subject</th>
                             <th>Message</th>
-                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -35,14 +34,6 @@
                                 <td>{{ $ticket->subject }}</td>
                                 <td>{{ $ticket->message }}</td>
                                 <td>
-                                    <span class="fw-bold 
-                                        {{ $ticket->status === 'open' ? 'text-primary' : '' }}
-                                        {{ $ticket->status === 'in_progress' ? 'text-warning' : '' }}
-                                        {{ $ticket->status === 'resolved' ? 'text-success' : '' }}">
-                                        {{ ucfirst($ticket->status) }}
-                                    </span>
-                                </td>
-                                <td>
                                     <form method="POST" action="{{ route('admin.tickets.update', $ticket->id) }}" class="d-inline">
                                         @csrf
                                         <div class="d-flex gap-2">
@@ -51,9 +42,7 @@
                                                 <option value="in_progress" {{ $ticket->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
                                                 <option value="resolved" {{ $ticket->status === 'resolved' ? 'selected' : '' }}>Resolved</option>
                                             </select>
-                                            <button type="submit" class="btn btn-primary btn-sm">
-                                                <i class="bi bi-save"></i> Update
-                                            </button>
+                                            <button type="submit" class="btn btn-primary">Update</button>
                                         </div>
                                     </form>
                                 </td>

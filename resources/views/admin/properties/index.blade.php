@@ -37,7 +37,7 @@
                                 {{ ucfirst($property->status) }}
                             </span>
                         </td>
-                        <td class="d-flex justify-content-between">
+                        <td class="d-flex gap-2">
                             @if($property->status === 'pending')
                                 <form method="POST" action="{{ route('admin.properties.approve', $property->id) }}" class="d-flex justify-content-between">
                                     @csrf

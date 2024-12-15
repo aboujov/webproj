@@ -43,7 +43,7 @@
                             <form method="POST" action="{{ route('admin.bookings.update', $booking->id) }}" class="d-flex justify-content-between">
                                 @csrf
                                 <div class="form-group d-flex">
-                                    <select name="status" class="form-control mr-2">
+                                    <select name="status" class="form-select form-select-sm">
                                         <option value="pending" {{ $booking->status === 'pending' ? 'selected' : '' }}>Pending</option>
                                         <option value="approved" {{ $booking->status === 'approved' ? 'selected' : '' }}>Approved</option>
                                         <option value="cancelled" {{ $booking->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>

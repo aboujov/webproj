@@ -15,6 +15,7 @@ use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DataExportController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
@@ -69,6 +70,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     Route::get('/transactions/report', [TransactionController::class, 'generateReport'])->name('transactions.report');
     Route::get('/transactions/last', [TransactionController::class, 'getLastTransactions']);
     Route::get('/transactions/total-amount', [TransactionController::class, 'getTotalAmount']);
+
+    // Security Logs
+    Route::get('/security', [SecurityController::class, 'index'])->name('security');
+    Route::post('/security/resolve/{id}', [SecurityController::class, 'resolve'])->name('security.resolve');
 
     // Announcements (Resource Route)
     Route::resource('announcements', AnnouncementController::class);

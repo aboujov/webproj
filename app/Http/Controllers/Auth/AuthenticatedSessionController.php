@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Helpers\SecurityHelper;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -17,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login'); 
+        return view('auth.login');
     }
 
     /**
@@ -26,6 +27,7 @@ class AuthenticatedSessionController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
+
     public function store(Request $request): RedirectResponse
     {
         // Validate the request input
@@ -43,11 +45,15 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
+        // Log the failed login attempt using the SecurityHelper
+        SecurityHelper::logEvent('Failed login attempt for email: ' . $request->email);
+
         // Redirect back with error if authentication fails
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->withInput(); // Preserve the old input for convenience
     }
+
 
     /**
      * Destroy an authenticated session.

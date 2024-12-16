@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin'
             ]
         );
-    
+
         // Create random users and hosts
         User::factory(10)->create();
 
@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
             PropertySeeder::class,
             TicketSeeder::class,
             BookingSeeder::class,
-            TransactionSeeder::class
+            TransactionSeeder::class,
+            SecurityLogSeeder::class
         ]);
     }
 }

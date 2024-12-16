@@ -89,6 +89,8 @@
             <a href="{{ route('admin.hosts') }}">Manage Hosts</a>
             <a href="{{ route('admin.tickets') }}">Manage Tickets</a>
             <a href="{{ route('admin.transactions') }}">Manage Transactions</a>
+            <a href="{{ route('admin.security') }}">Security Logs</a>
+
         </div>
         <a href="{{ route('logout') }}" class="logout-btn">Logout</a>
     </div>

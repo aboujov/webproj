@@ -39,19 +39,23 @@
     </div>
 
     <!-- Chart Section -->
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-md-8">
             <div class="chart-container">
-                <h4>User Activity</h4>
+                <h4>Weekly Bookings Overview</h4>
                 <canvas id="userActivityChart"></canvas>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 d-flex flex-column justify-content-between">
             <div class="stat-card d-flex flex-column align-items-center justify-content-center">
                 <h4 id="recent-transactions-heading"></h4>
                 <ul class="list-unstyled" id="recent-transactions">
                     <div id="spinner5" class="spinner-border text-primary" role="status"></div>
                 </ul>
+            </div>
+            <div class="chart-container">
+                <h4>User Roles Distribution</h4>
+                <canvas id="barChart"></canvas>
             </div>
         </div>
     </div>
@@ -60,35 +64,107 @@
 
 @push('scripts')
 <script>
-    const ctx = document.getElementById('userActivityChart').getContext('2d');
-    const userActivityChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-            datasets: [{
-                label: 'Active Users',
-                data: [120, 200, 150, 220, 300, 250, 400],
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 2,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-            },
-            scales: {
-                x: {
-                    beginAtZero: true
-                },
-                y: {
-                    beginAtZero: true
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('userActivityChart').getContext('2d');
+        let userActivityChart;
+
+        // Fetch Weekly Bookings Data
+        axios.get('/admin/weekly-bookings')
+            .then(response => {
+                const data = response.data;
+
+                // Extract labels and data points
+                const labels = data.map(entry => entry.date);
+                const bookingCounts = data.map(entry => entry.count);
+
+                // Destroy existing chart if it exists
+                if (userActivityChart) {
+                    userActivityChart.destroy();
                 }
+
+                // Create chart with dynamic data
+                userActivityChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Bookings',
+                            data: bookingCounts,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 2,
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching weekly bookings:', error);
+            });
+
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    let barChart;
+
+    axios.get('/admin/user-roles')
+        .then(response => {
+            const data = response.data;
+
+            // Extract labels and data
+            const labels = data.map(role => role.role.charAt(0).toUpperCase() + role.role.slice(1));
+            const counts = data.map(role => role.count);
+
+            // Destroy existing chart if it exists
+            if (barChart) {
+                barChart.destroy();
             }
-        }
+
+            // Create the chart with API data
+            barChart = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'User Roles',
+                        data: counts,
+                        backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545'], // Add more colors if needed
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching user roles:', error);
+        });
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

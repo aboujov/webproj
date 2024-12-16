@@ -33,10 +33,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('dashboard');
-
+    Route::get('/weekly-bookings', [AdminController::class, 'weeklyBookings']);
+    
     // User Management
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::get('/user-count', [UserController::class, 'getUserCount']);
+    Route::get('/user-roles', [UserController::class, 'getUserRoles']);
     Route::post('/users/approve/{id}', [UserController::class, 'approve'])->name('users.approve');
     Route::post('/users/ban/{id}', [UserController::class, 'ban'])->name('users.ban');
 

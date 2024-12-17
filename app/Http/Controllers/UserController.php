@@ -34,5 +34,15 @@ public function getUserCount()
     return response()->json(['count' => $userCount]);
 }
 
+public function getUserRoles()
+{
+    $roles = User::selectRaw('role, COUNT(*) as count')
+                 ->groupBy('role')
+                 ->get();
+
+    return response()->json($roles);
+}
+
+
 }
 

@@ -12,13 +12,15 @@ class AnnouncementMail extends Mailable
     use Queueable, SerializesModels;
 
     public $announcement;
+    public $actionType; // Add a new property for the action type.
 
     /**
      * Create a new message instance.
      */
-    public function __construct(Announcement $announcement)
+    public function __construct(Announcement $announcement, $actionType = 'created')
     {
         $this->announcement = $announcement;
+        $this->actionType = $actionType; // Pass action type to the property.
     }
 
     /**
@@ -26,7 +28,24 @@ class AnnouncementMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.announcement') // This is the view being referenced.
-                    ->with(['announcement' => $this->announcement]);
+        // Dynamically change the subject and content based on action type
+        switch ($this->actionType) {
+            case 'edited':
+                $subject = 'Announcement Updated';
+                break;
+            case 'deleted':
+                $subject = 'Announcement Removed';
+                break;
+            default:
+                $subject = 'New Announcement';
+                break;
+        }
+
+        return $this->subject($subject) // Set email subject dynamically
+        ->view('emails.announcement')
+            ->with([
+                'announcement' => $this->announcement,
+                'actionType' => $this->actionType // Pass action type to the view.
+            ]);
     }
 }

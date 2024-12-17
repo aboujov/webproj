@@ -36,7 +36,6 @@ class AnnouncementController extends Controller
         return redirect()->route('admin.announcements.index');
     }
 
-
     public function edit(Announcement $announcement)
     {
         return view('admin.announcements.edit', compact('announcement'));
@@ -73,4 +72,3 @@ class AnnouncementController extends Controller
             ->with('success', 'Announcement deleted and users notified.');
     }
 }
-
